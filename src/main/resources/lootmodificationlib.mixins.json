@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "lootmodificationlib.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "LootDataTypeMixin",
+    "LootTableMixinModifyDrops",
+    "LootTableMixinSaveId",
+    "ReloadableRegistriesMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"id": "lootmodificationlib",
+	"version": "${version}",
+	"name": "LootModificationLib",
+	"description": "A small library providing events for dynamically modifying loot tables.",
+	"authors": [
+		"cputnam-a11y"
+	],
+	"contact": {
+	},
+	"license": "MIT",
+	"icon": "assets/lootmodificationlib/icon.png",
+	"environment": "*",
+	"entrypoints": {
+	},
+	"mixins": [
+		"lootmodificationlib.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21.4",
+		"java": ">=21",
+		"fabric-api-base": "*"
+	}
+}
