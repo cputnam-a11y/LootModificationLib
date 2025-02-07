@@ -14,12 +14,9 @@ repositories {
 }
 
 loom {
-    splitEnvironmentSourceSets()
-
     mods {
         "lootmodificationlib" {
             sourceSet sourceSets.main
-            sourceSet sourceSets.client
         }
     }
 
@@ -30,6 +27,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     include modImplementation(fabricApi.module("fabric-api-base", project.fabric_version))
+    modLocalRuntime "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 }
 
