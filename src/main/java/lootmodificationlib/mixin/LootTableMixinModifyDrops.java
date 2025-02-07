@@ -27,8 +27,14 @@ public abstract class LootTableMixinModifyDrops implements LootTableExtension {
     )
     private Consumer<ItemStack> lootmodificationlib$CaptureStackOutput(
             Consumer<ItemStack> original,
-            @Share(namespace = "lootmodificationlib", value = "originalConsumer") LocalRef<Consumer<ItemStack>> originalConsumer,
-            @Share(namespace = "lootmodificationlib", value = "droppedStacks") LocalRef<ObjectArrayList<ItemStack>> droppedStacks
+            @Share(
+                    namespace = "lootmodificationlib",
+                    value = "originalConsumer"
+            ) LocalRef<Consumer<ItemStack>> originalConsumer,
+            @Share(
+                    namespace = "lootmodificationlib",
+                    value = "droppedStacks"
+            ) LocalRef<ObjectArrayList<ItemStack>> droppedStacks
     ) {
         originalConsumer.set(original);
         droppedStacks.set(new ObjectArrayList<>());
@@ -39,13 +45,19 @@ public abstract class LootTableMixinModifyDrops implements LootTableExtension {
             method = "generateUnprocessedLoot(Lnet/minecraft/loot/context/LootContext;Ljava/util/function/Consumer;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/loot/context/LootContext;markInactive(Lnet/minecraft/loot/context/LootContext$Entry;)V"
+                    target =  "Lnet/minecraft/loot/context/LootContext;markInactive(Lnet/minecraft/loot/context/LootContext$Entry;)V"
             )
     )
     private void lootmodificationlib$onLootGenerated(
             LootContext lootContext, Consumer<ItemStack> consumer, CallbackInfo ci,
-            @Share(namespace = "exn", value = "originalConsumer") LocalRef<Consumer<ItemStack>> originalConsumer,
-            @Share(namespace = "exn", value = "droppedStacks") LocalRef<ObjectArrayList<ItemStack>> droppedStacks
+            @Share(
+                    namespace = "lootmodificationlib",
+                    value = "originalConsumer"
+            ) LocalRef<Consumer<ItemStack>> originalConsumer,
+            @Share(
+                    namespace = "lootmodificationlib",
+                    value = "droppedStacks"
+            ) LocalRef<ObjectArrayList<ItemStack>> droppedStacks
     ) {
 
         ModifyDrops.EVENT.invoker().modifyLoot(
