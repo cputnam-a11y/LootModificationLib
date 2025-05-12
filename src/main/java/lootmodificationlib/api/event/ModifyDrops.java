@@ -1,33 +1,51 @@
 package lootmodificationlib.api.event;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import lootmodificationlib.api.loot.condition.ModLootConditions;
-import lootmodificationlib.api.util.InterestKey;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.condition.AllOfLootCondition;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.util.TriConsumer;
+
+import java.util.List;
 
 @FunctionalInterface
 public interface ModifyDrops {
+    // no conditions = all conditions match
+    LootCondition TRUE = AllOfLootCondition.builder().build();
+
     Event<ModifyDrops> EVENT = EventFactory.createArrayBacked(ModifyDrops.class, (listeners) -> (id, drops, context) -> {
+
         for (var listener : listeners) {
-            if (!listener.getInterestKey().declaresInterest(id) ||
-                    !listener.getApplicationCondition(id).test(context))
+
+            if (!listener.applicationCondition(id).test(context)) {
                 continue;
+            }
+
             listener.modifyLoot(id, drops, context);
         }
+
     });
 
-    default InterestKey getInterestKey() {
-        return InterestKey.all();
+    default LootCondition applicationCondition(Identifier id) {
+        return TRUE;
     }
 
-    default LootCondition getApplicationCondition(Identifier id) {
-        return ModLootConditions.alwaysTrue();
-    }
+    void modifyLoot(Identifier id, List<ItemStack> drops, LootContext context);
 
-    void modifyLoot(Identifier id, ObjectArrayList<ItemStack> drops, LootContext context);
+    static ModifyDrops withCondition(LootCondition condition, TriConsumer<Identifier, List<ItemStack>, LootContext> modification) {
+        return new ModifyDrops() {
+            @Override
+            public void modifyLoot(Identifier id, List<ItemStack> drops, LootContext context) {
+                modification.accept(id, drops, context);
+            }
+
+            @Override
+            public LootCondition applicationCondition(Identifier id) {
+                return condition;
+            }
+        };
+    }
 }
