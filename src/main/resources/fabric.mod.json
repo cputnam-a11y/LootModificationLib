@@ -22,5 +22,12 @@
 		"minecraft": "~1.21.1",
 		"java": ">=21",
 		"fabric-api-base": "*"
+	},
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/class_8490": [
+				"lootmodificationlib/impl/loot/extension/LootDataTypeExtension<TT;>"
+			]
+		}
 	}
 }
